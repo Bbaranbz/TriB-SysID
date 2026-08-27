@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Sanal ortam
+venv/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+notebooks/*.ipynb_checkpoints
+
+# Test
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Proje verisi ve çıktıları (BÜYÜK dosyalar - depoyu şişirmesin)
+data/raw/*.csv
+outputs/*.json
+outputs/*.xml
+outputs/*.urdf
+
+# Ama klasör yapısını korumak icin .gitkeep dosyalarını DAHIL ET
+!data/raw/.gitkeep
+!outputs/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Kullanicinin kendi robot dosyalari (paylasilmiyor, sadece yerel test icin)
+models/robot.urdf
+models/model.xml
+
+models/meshes/*
+!models/meshes/.gitkeep

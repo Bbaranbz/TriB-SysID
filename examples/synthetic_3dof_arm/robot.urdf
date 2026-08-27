@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot name="example_3dof_arm">
+  <link name="base_link">
+    <inertial>
+      <mass value="2.0"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.02" iyy="0.02" izz="0.03" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <link name="link_alpha">
+    <inertial>
+      <mass value="1.2"/>
+      <origin xyz="0.12 0 0"/>
+      <inertia ixx="0.004" iyy="0.015" izz="0.015" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <link name="link_beta">
+    <inertial>
+      <mass value="0.9"/>
+      <origin xyz="0.10 0 0"/>
+      <inertia ixx="0.003" iyy="0.010" izz="0.010" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <link name="link_gamma">
+    <inertial>
+      <mass value="0.4"/>
+      <origin xyz="0.06 0 0"/>
+      <inertia ixx="0.001" iyy="0.003" izz="0.003" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="waist" type="revolute">
+    <parent link="base_link"/>
+    <child link="link_alpha"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="50" velocity="6"/>
+  </joint>
+
+  <joint name="shoulder" type="revolute">
+    <parent link="link_alpha"/>
+    <child link="link_beta"/>
+    <origin xyz="0.24 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.0" upper="2.0" effort="40" velocity="6"/>
+  </joint>
+
+  <joint name="wrist" type="revolute">
+    <parent link="link_beta"/>
+    <child link="link_gamma"/>
+    <origin xyz="0.2 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.5" upper="2.5" effort="20" velocity="8"/>
+  </joint>
+</robot>

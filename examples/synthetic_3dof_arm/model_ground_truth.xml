@@ -1,0 +1,49 @@
+<mujoco model="example_3dof_arm">
+  <compiler angle="radian" autolimits="true"/>
+  <option timestep="0.002" gravity="0 0 -9.81" integrator="implicitfast"/>
+
+  <default>
+    <geom type="capsule" size="0.03" rgba="0.7 0.7 0.7 1"/>
+  </default>
+
+  <worldbody>
+    <body name="base_link">
+      <geom type="cylinder" size="0.06 0.03"/>
+      <inertial pos="0 0 0" mass="2.0" diaginertia="0.02 0.02 0.03"/>
+
+      <body name="link_alpha">
+        <!-- GROUND TRUTH: waist icin Fv=0.45, Fc=1.20 -->
+        <joint name="waist" type="hinge" axis="0 0 1"
+               range="-3.14 3.14"
+               damping="0" frictionloss="0"/>
+        <inertial pos="0.12 0 0" mass="1.2" diaginertia="0.004 0.015 0.015"/>
+        <geom fromto="0 0 0 0.24 0 0"/>
+
+        <body name="link_beta" pos="0.24 0 0">
+          <!-- GROUND TRUTH: shoulder icin Fv=0.30, Fc=0.85 -->
+          <joint name="shoulder" type="hinge" axis="0 0 1"
+                 range="-2.0 2.0"
+                 damping="0" frictionloss="0"/>
+          <inertial pos="0.10 0 0" mass="0.9" diaginertia="0.003 0.010 0.010"/>
+          <geom fromto="0 0 0 0.2 0 0"/>
+
+          <body name="link_gamma" pos="0.2 0 0">
+            <!-- GROUND TRUTH: wrist icin Fv=0.12, Fc=0.35 -->
+            <joint name="wrist" type="hinge" axis="0 0 1"
+                   range="-2.5 2.5"
+                   damping="0" frictionloss="0"/>
+            <inertial pos="0.06 0 0" mass="0.4" diaginertia="0.001 0.003 0.003"/>
+            <geom fromto="0 0 0 0.12 0 0"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <!-- GROUND TRUTH servo kazanclari: pipeline'in bulmasi gereken hedef degerler -->
+    <position name="waist_position"    joint="waist"    kp="300" kv="30" forcerange="-50 50"/>
+    <position name="shoulder_position" joint="shoulder" kp="220" kv="22" forcerange="-40 40"/>
+    <position name="wrist_position"    joint="wrist"    kp="90"  kv="9"  forcerange="-20 20"/>
+  </actuator>
+</mujoco>
