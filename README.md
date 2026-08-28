@@ -2,7 +2,7 @@
 
 *(TriB: "Triple B" — Berk Baran Buz'un baş harflerinden)*
 
-![Python](https://img.shields.io/badge/python-3.9%2B-blue)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![Robotics](https://img.shields.io/badge/domain-rigid--body%20dynamics-informational)
 
