@@ -1,4 +1,6 @@
-# Genel Rijit-Gövde Sistem Tanımlama Aracı
+# TriB-SysID — Genel Rijit-Gövde Sistem Tanımlama Aracı
+
+*(TriB: "Triple B" — Berk Baran Buz'un baş harflerinden)*
 
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
@@ -143,6 +145,26 @@ Mekanik atölye şartlarında üretilen veya modifiye edilen CNC eksenlerinde (d
 
 Üretim hattında çalışan çok eksenli robot kollarında, zamanla aşınmaya bağlı olarak değişen eklem sürtünmelerinin (viskoz ve Coulomb) periyodik olarak yeniden kestirilmesi ve modelin güncel tutulması. Tanımlanan güncel parametrelerle MuJoCo gibi bir simülatörde dijital ikiz (digital twin) oluşturularak, yeni bir hareket planının veya kontrol algoritmasının gerçek robota yüklenmeden önce simülasyonda test edilmesi — bu, hem geliştirme süresini kısaltır hem de gerçek donanımda deneme-yanılma riskini azaltır.
 
+## Gelecek Özellikler (Planlanan)
+
+### CAD-Düzenlileştirilmiş (Regularized) Tam Parametre Tanımlama
+
+Şu anki `00_full_parameter_identification.py`, zayıf gözlemlenebilen atalet
+parametrelerini (bkz. "Bilinen Sınırlamalar") güvenilir şekilde ayıramıyor.
+Planlanan iyileştirme: tüm parametreleri **aynı anda**, iki hedefi dengeleyen
+bir optimizasyonla çözmek —
+
+1. Veriye mümkün olduğunca iyi uysun (mevcut yöntem gibi)
+2. **Aynı zamanda** URDF'deki mevcut (üretici/CAD) değerlerinden çok fazla
+   sapmasın (bir düzenlileştirme/ceza terimi ile)
+
+Bu sayede iyi gözlemlenebilen parametreler (sürtünme gibi) veriye göre serbestçe
+ayarlanırken, zayıf gözlemlenebilen parametreler otomatik olarak CAD değerine
+yakın kalır — hem fiziksel olarak tutarlı hem kullanılabilir bir sonuç elde
+edilir. Bu yöntem literatürde bilinen bir teknik olup (bkz. Traversaro ve ark.,
+fiziksel tutarlılık kısıtlı parametre tanımlama), muhtemelen `cvxpy` gibi bir
+konveks optimizasyon kütüphanesi gerektirecektir.
+
 ## Opsiyonel Modüller
 
 ### `optional_mujoco_servo_module/` — Sadece MuJoCo `<position>` aktüatörü kullananlar için
@@ -225,6 +247,16 @@ serbesttir, sadece CSV sütunlarının SIRA numarasıyla eşleşmesi gerekir.
 - Tam parametre tanımlama modu (`00_...`), yetersiz uyarma trajectory'leriyle
   fiziksel olarak anlamsız sonuçlar üretebilir — script bunu otomatik
   tespit edip uyarır, ama nihai kararı kullanıcı vermelidir.
+- `scripts/00_full_parameter_identification.py`'nin raporladığı **atalet/kütle-merkezi
+  parametre isimleri yanıltıcı olabilir**: QR ayrıştırması, birbirine bağımlı
+  (korele) ham parametreleri elediğinde, kalan sütuna verdiği katsayı o
+  parametrenin saf kendisi değil, elenen parametrelerin etkisini de içeren bir
+  **doğrusal kombinasyon** olabilir. Bu script'ten **sadece sürtünme (Fv, Fc)
+  çıktılarına güvenin** — kütle/atalet için raporlanan sayısal değerleri ham
+  gerçek fiziksel değer olarak yorumlamayın. (Bu durum, bilinen ground-truth
+  parametreli sentetik bir testle doğrulanmıştır: sürtünme değerleri %1-6 hata
+  ile doğru çıkarken, bir atalet-kombinasyon değeri gerçek değerden ~7 kat
+  sapmıştır.)
 
 ## Lisans
 
